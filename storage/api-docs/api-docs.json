@@ -1,0 +1,37 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "E-commerce API",
+        "description": "API documentation for the E-commerce project",
+        "contact": {
+            "email": "support@yourapi.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/users": {
+            "get": {
+                "tags": [
+                    "Example"
+                ],
+                "summary": "Example endpoint",
+                "operationId": "7e2f5799553ec93c9c43e2a58490d447",
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Example",
+            "description": "Example"
+        }
+    ]
+}
