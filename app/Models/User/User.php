@@ -10,6 +10,18 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
+    protected $guarded = [];
+    protected $hidden = [
+        'password',
+        'confirm_password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
     // Rest omitted for brevity
 
     /**
