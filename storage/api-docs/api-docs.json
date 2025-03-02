@@ -12,26 +12,658 @@
         },
         "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "/api"
+        }
+    ],
     "paths": {
-        "/users": {
-            "get": {
+        "/user/register": {
+            "post": {
                 "tags": [
-                    "Example"
+                    "User"
                 ],
-                "summary": "Example endpoint",
-                "operationId": "7e2f5799553ec93c9c43e2a58490d447",
+                "summary": "Create new account",
+                "operationId": "c1a0ce1d9e760959f5ec4ee43814224f",
+                "requestBody": {
+                    "description": "User data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "Nour alden"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "khlil"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "khlilnoor0@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "1234567890"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "1234567890"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "0987654321"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Syria, Damascus, Al Sayeda Zeinab"
+                                    },
+                                    "birth_date": {
+                                        "type": "string",
+                                        "example": "23/9/2004"
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "example": "Male"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "example": ""
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
-                    "200": {
-                        "description": "Successful response"
+                    "201": {
+                        "description": "User registered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "first_name": {
+                                            "type": "string",
+                                            "example": "Nour alden"
+                                        },
+                                        "last_name": {
+                                            "type": "string",
+                                            "example": "khlil"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "khlilnoor0@gmail.com"
+                                        },
+                                        "phone": {
+                                            "type": "string",
+                                            "example": "0987654321"
+                                        },
+                                        "address": {
+                                            "type": "string",
+                                            "example": "Syria, Damascus, Al Sayeda Zeinab"
+                                        },
+                                        "birth_date": {
+                                            "type": "string",
+                                            "example": "23/9/2004"
+                                        },
+                                        "gender": {
+                                            "type": "string",
+                                            "example": "Male"
+                                        },
+                                        "image": {
+                                            "type": "string",
+                                            "format": "url",
+                                            "example": "https://example.com/images/photo.jpg"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
                     }
                 }
+            }
+        },
+        "/user/emailVerify": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Account verification using a OTP",
+                "operationId": "9ad364cf6858e20bff93835ad288cc67",
+                "requestBody": {
+                    "description": "Account verification information",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "khlilnoor0@gmail.com"
+                                    },
+                                    "otp": {
+                                        "type": "string",
+                                        "example": "123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Email Verified successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Log in using email and password",
+                "operationId": "60d5ef3177f7fb58a3542bf478eedf00",
+                "requestBody": {
+                    "description": "Login information",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "khlilnoor0@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "1234567890"
+                                    },
+                                    "fcm_token": {
+                                        "type": "string",
+                                        "example": "dpTcAzVoQFil-nyJYaTJd7:APA91bGmhBPVV1MtbKFGrYcIqyMaEycdGXPzOgahYSfM3iLaYQTXQGSG5D-YomRDo7-VqvxWsJOYTYYG3Ae_btPHnZZ_b6XoNahkdo7B5bO4sk-I6AeP7_Q"
+                                    },
+                                    "remember_me": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Logged in successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "first_name": {
+                                            "type": "string",
+                                            "example": "Nour alden"
+                                        },
+                                        "last_name": {
+                                            "type": "string",
+                                            "example": "khlil"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "khlilnoor0@gmail.com"
+                                        },
+                                        "phone": {
+                                            "type": "string",
+                                            "example": "0987654321"
+                                        },
+                                        "address": {
+                                            "type": "string",
+                                            "example": "Syria, Damascus, Al Sayeda Zeinab"
+                                        },
+                                        "birth_date": {
+                                            "type": "string",
+                                            "example": "23/9/2004"
+                                        },
+                                        "gender": {
+                                            "type": "string",
+                                            "example": "Male"
+                                        },
+                                        "image": {
+                                            "type": "string",
+                                            "format": "url",
+                                            "example": "https://example.com/images/photo.jpg"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Incorrect password"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/user/logout": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Log out of account",
+                "operationId": "bc3adbf13f10962587010c353285e4f1",
+                "responses": {
+                    "200": {
+                        "description": "Logged out successfully"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/user/profile": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Show user profile",
+                "operationId": "25e2873bccd2405af28841bcd395ee39",
+                "responses": {
+                    "200": {
+                        "description": "Get profile successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "first_name": {
+                                            "type": "string",
+                                            "example": "Nour alden"
+                                        },
+                                        "last_name": {
+                                            "type": "string",
+                                            "example": "khlil"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "khlilnoor0@gmail.com"
+                                        },
+                                        "phone": {
+                                            "type": "string",
+                                            "example": "0987654321"
+                                        },
+                                        "address": {
+                                            "type": "string",
+                                            "example": "Syria, Damascus, Al Sayeda Zeinab"
+                                        },
+                                        "birth_date": {
+                                            "type": "string",
+                                            "example": "23/9/2004"
+                                        },
+                                        "gender": {
+                                            "type": "string",
+                                            "example": "Male"
+                                        },
+                                        "image": {
+                                            "type": "string",
+                                            "format": "url",
+                                            "example": "https://example.com/images/photo.jpg"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/user/update": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update user information",
+                "operationId": "c2056b37ef8f601e5c936fa5d20a0fb8",
+                "requestBody": {
+                    "description": "New data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "Nour alden"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "khlil"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "khlilnoor0@gmail.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "0987654321"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Syria, Damascus, Al Sayeda Zeinab"
+                                    },
+                                    "birth_date": {
+                                        "type": "string",
+                                        "example": "23/9/2004"
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "example": "Male"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "example": ""
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Profile updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "first_name": {
+                                            "type": "string",
+                                            "example": "Nour alden"
+                                        },
+                                        "last_name": {
+                                            "type": "string",
+                                            "example": "khlil"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "khlilnoor0@gmail.com"
+                                        },
+                                        "phone": {
+                                            "type": "string",
+                                            "example": ""
+                                        },
+                                        "address": {
+                                            "type": "string",
+                                            "example": "S0987654321yria, Damascus, Al Sayeda Zeinab"
+                                        },
+                                        "birth_date": {
+                                            "type": "string",
+                                            "example": "23/9/2004"
+                                        },
+                                        "gender": {
+                                            "type": "string",
+                                            "example": "Male"
+                                        },
+                                        "image": {
+                                            "type": "string",
+                                            "format": "url",
+                                            "example": "https://example.com/images/photo.jpg"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/user/forgetPassword": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Send a otp to the user to reset the password",
+                "operationId": "aa1f2bf819d47dc24ce41434d7eb5030",
+                "requestBody": {
+                    "description": "User email",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "khlilnoor0@gmail.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Check your email for reset password"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/user/resetPassword": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Reset password using a otp",
+                "operationId": "7dd75b8e6cbb144e699b7ece619e24fa",
+                "requestBody": {
+                    "description": "Email, new password and otp",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "khlilnoor0@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "1234567890"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "1234567890"
+                                    },
+                                    "otp": {
+                                        "type": "string",
+                                        "example": "123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Password reset successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/user/resendOTP": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Resend a otp to the user to reset the password or email verification, depending on the subject value",
+                "operationId": "279df8d8d62eb3659df2cf3f0f5dbfc8",
+                "parameters": [
+                    {
+                        "name": "subject",
+                        "in": "query",
+                        "description": "notification subject",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "User email",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "khlilnoor0@gmail.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "resend OTP successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/user/delete": {
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Delete account",
+                "operationId": "536cf4884d491d8ae78157334f5d3df5",
+                "responses": {
+                    "200": {
+                        "description": "Account deleted successfully"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/user/refreshToken": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Refresh jwt after expired it",
+                "operationId": "b2243cc53329811d7a013b93fdbe769a",
+                "responses": {
+                    "200": {
+                        "description": "Token refreshed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },
     "tags": [
         {
-            "name": "Example",
-            "description": "Example"
+            "name": "User",
+            "description": "User"
         }
-    ]
+    ],
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "in": "header",
+                "name": "Authorization",
+                "description": "Enter your Bearer token in the format `YOUR_TOKEN`. For example: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`"
+            }
+        }
+    }
 }

@@ -19,11 +19,9 @@ Route::prefix('user')->controller( UserController::class)->group(function () {
     Route::post('emailVerify', 'emailVerify');
     Route::post('resendOTP', 'resendOTP');
     Route::post('refreshToken', 'refreshToken');
-    Route::middleware('email.verify')->group(function () {
-        Route::post('login', 'login');
-        Route::post('forgetPassword', 'forgetPassword');
-        Route::post('resetPassword', 'resetPassword');
-    });
+    Route::post('login', 'login');
+    Route::post('forgetPassword', 'forgetPassword');
+    Route::post('resetPassword', 'resetPassword');
 });
 Route::middleware(['jwt.verify:api', 'email.verify'])->group(function () {
     Route::prefix('user')->controller( UserController::class)->group(function () {

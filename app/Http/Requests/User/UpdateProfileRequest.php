@@ -29,7 +29,7 @@ class UpdateProfileRequest extends FormRequest
             'last_name' =>'sometimes',
             'email' => 'sometimes|unique:users,email,'.$this->user()->email,
             'address' => 'sometimes',
-            'birthday' => 'sometimes',
+            'birth_date' => 'sometimes',
             'gender' => 'sometimes',
             'phone' => 'sometimes',
         ];

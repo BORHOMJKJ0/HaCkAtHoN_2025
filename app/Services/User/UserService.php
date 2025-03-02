@@ -14,6 +14,7 @@ use App\Http\Resources\UserResource;
 use App\Notifications\OTPNotification;
 use App\Repositories\UserRepository;
 use App\Services\ImageService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenExpiredException;
@@ -31,7 +32,14 @@ class UserService
         $this->userRepository = $userRepository;
         $this->imageService = $imageService;
     }
-    public function register(RegisterRequest $request)
+
+    /**
+     * Create new account
+     *
+     * @param RegisterRequest $request
+     * @return JsonResponse
+     */
+    public function register(RegisterRequest $request) : JsonResponse
     {
         $inputs = $request->except('password_confirmation');
         if($request->hasFile('image')){
@@ -49,14 +57,26 @@ class UserService
         );
     }
 
-    public function emailVerify(EmailVerifyRequest $request)
+    /**
+     * Account verification using a OTP
+     *
+     * @param EmailVerifyRequest $request
+     * @return JsonResponse
+     */
+    public function emailVerify(EmailVerifyRequest $request) : JsonResponse
     {
         $email = $request->input('email');
         $this->userRepository->markEmailAsVerified($email);
-        return ResponseHelper::jsonResponse([], 'Email Verified successfully, You can login now',);
+        return ResponseHelper::jsonResponse([], 'Email Verified successfully, You can use the app now',);
     }
 
-    public function login(LoginRequest $request)
+    /**
+     * Log in using email and password
+     *
+     * @param LoginRequest $request
+     * @return JsonResponse
+     */
+    public function login(LoginRequest $request) : JsonResponse
     {
         $inputs = $request->all();
 
@@ -82,7 +102,13 @@ class UserService
         return ResponseHelper::jsonResponse($data, 'Logged in successfully');
     }
 
-    public function logout(Request $request)
+    /**
+     * Log out of account
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function logout(Request $request) : JsonResponse
     {
         $token = $request->header('Authorization');
         JWTAuth::invalidate($token);
@@ -90,7 +116,12 @@ class UserService
         return ResponseHelper::jsonResponse([], 'Logged out successfully!');
     }
 
-    public function getProfile()
+    /**
+     * Show user profile
+     *
+     * @return JsonResponse
+     */
+    public function getProfile() : JsonResponse
     {
         $user = JWTAuth::user();
         $data = [
@@ -99,7 +130,13 @@ class UserService
         return ResponseHelper::jsonResponse($data, 'Get profile successfully');
     }
 
-    public function updateProfile(UpdateProfileRequest $request)
+    /**
+     * Update user information
+     *
+     * @param UpdateProfileRequest $request
+     * @return JsonResponse
+     */
+    public function updateProfile(UpdateProfileRequest $request) : JsonResponse
     {
         $inputs = $request->all();
         $user = JWTAuth::user();
@@ -113,25 +150,40 @@ class UserService
         return ResponseHelper::jsonResponse($data, 'profile updated successfully', 201);
     }
 
-    public function forgetPassword(ForgetPasswordRequest $request)
+    /**
+     * Send a otp to the user to reset the password
+     *
+     * @param ForgetPasswordRequest $request
+     * @return JsonResponse
+     */
+    public function forgetPassword(ForgetPasswordRequest $request) : JsonResponse
     {
         $email = $request->email;
         $user = $this->userRepository->findByEmail($email);
-        if (! $user) {
-            return ResponseHelper::jsonResponse([], 'This email is not found', 400, false);
-        }
         $user->notify(new OTPNotification('resetPassword'));
         return ResponseHelper::jsonResponse([], 'Check your email for reset password!');
     }
 
-    public function resetPassword(ResetPasswordRequest $request)
+    /**
+     * Reset password using a otp
+     *
+     * @param ResetPasswordRequest $request
+     * @return JsonResponse
+     */
+    public function resetPassword(ResetPasswordRequest $request) : JsonResponse
     {
         $data = $request->all();
         $this->userRepository->updatePassword($data['email'], $data['password']);
-        return ResponseHelper::jsonResponse([], 'Password reset successfully!');
+        return ResponseHelper::jsonResponse([], 'Password reset successfully!', 201);
     }
 
-    public function resendOTP(ResendOTPRequest $request)
+    /**
+     * Resend a otp to the user to reset the password or email verification, depending on the subject value
+     *
+     * @param ResendOTPRequest $request
+     * @return JsonResponse
+     */
+    public function resendOTP(ResendOTPRequest $request) : JsonResponse
     {
         $email = $request->input('email');
         $user = $this->userRepository->findByEmail($email);
@@ -142,13 +194,24 @@ class UserService
         return ResponseHelper::jsonResponse([], 'resend OTP successfully!');
     }
 
-    public function deleteAccount()
+    /**
+     * Delete account
+     *
+     * @return JsonResponse
+     */
+    public function deleteAccount() : JsonResponse
     {
         $this->userRepository->delete();
         return ResponseHelper::jsonResponse([], 'Account deleted successfully!');
     }
 
-    public function refreshToken(Request $request)
+    /**
+     * Refresh jwt after expired it
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function refreshToken(Request $request) : JsonResponse
     {
         try {
             $new_token = JWTAuth::parseToken()->refresh();
