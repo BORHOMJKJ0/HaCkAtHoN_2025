@@ -2,13 +2,10 @@
 
 namespace App\Http\Requests\User;
 
+use App\Http\Requests\BaseRequest;
 use Ichtrojan\Otp\Otp;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use App\Helpers\ResponseHelper;
-use Illuminate\Contracts\Validation\Validator;
 
-class EmailVerifyRequest extends FormRequest
+class EmailVerifyRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,26 +24,14 @@ class EmailVerifyRequest extends FormRequest
     {
         return [
             'email' => 'required|email|exists:users,email',
-            'otp' => ['required', 'numeric', 'digits:6', function($attribute, $value, $fail) {
-                $otp = new Otp();
+            'otp' => ['required', 'numeric', 'digits:6', function ($attribute, $value, $fail) {
+                $otp = new Otp;
                 $isValid = $otp->validate(request('email'), $value);
 
-                if (!$isValid->status) {
+                if (! $isValid->status) {
                     $fail('The provided OTP is invalid.');
                 }
             }],
         ];
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(
-            ResponseHelper::jsonResponse(
-                $validator->errors(),
-                'Validation failed',
-                400,
-                false
-            )
-        );
     }
 }

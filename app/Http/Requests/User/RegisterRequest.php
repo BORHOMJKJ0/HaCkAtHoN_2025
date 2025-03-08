@@ -2,12 +2,9 @@
 
 namespace App\Http\Requests\User;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use App\Helpers\ResponseHelper;
-use Illuminate\Contracts\Validation\Validator;
+use App\Http\Requests\BaseRequest;
 
-class RegisterRequest extends FormRequest
+class RegisterRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -34,17 +31,5 @@ class RegisterRequest extends FormRequest
             'address' => 'required',
             'birth_date' => 'required',
         ];
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(
-            ResponseHelper::jsonResponse(
-                $validator->errors(),
-                'Validation failed',
-                400,
-                false
-            )
-        );
     }
 }

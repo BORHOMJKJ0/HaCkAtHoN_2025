@@ -19,11 +19,13 @@ class checkEmailVerify
     public function handle(Request $request, Closure $next): Response
     {
         $user = JWTAuth::user();
-        if(!$user){
+        if (! $user) {
             $user = User::where('email', $request->email)->first();
         }
-        if(!$user->email_verified_at)
-            return ResponseHelper::jsonResponse([],'Your email is not verified.', 401, false);
+        if (! $user->email_verified_at) {
+            return ResponseHelper::jsonResponse([], 'Your email is not verified.', 401, false);
+        }
+
         return $next($request);
     }
 }

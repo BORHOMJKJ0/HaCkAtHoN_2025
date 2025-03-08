@@ -2,8 +2,8 @@
 
 namespace App\Models\User;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -11,6 +11,7 @@ class User extends Authenticatable implements JWTSubject
     use Notifiable;
 
     protected $guarded = [];
+
     protected $hidden = [
         'password',
         'confirm_password',

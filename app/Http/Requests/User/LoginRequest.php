@@ -2,12 +2,9 @@
 
 namespace App\Http\Requests\User;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use App\Helpers\ResponseHelper;
-use Illuminate\Contracts\Validation\Validator;
+use App\Http\Requests\BaseRequest;
 
-class LoginRequest extends FormRequest
+class LoginRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -43,18 +40,5 @@ class LoginRequest extends FormRequest
                 'remember_me' => filter_var($this->remember_me, FILTER_VALIDATE_BOOLEAN),
             ]);
         }
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-
-        throw new HttpResponseException(
-            ResponseHelper::jsonResponse(
-                $validator->errors(),
-                'Validation failed',
-                400,
-                false
-            )
-        );
     }
 }

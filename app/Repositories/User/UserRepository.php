@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\User;
 
 use App\Models\User\User;
 use App\Traits\Lockable;
@@ -10,16 +10,21 @@ use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 class UserRepository
 {
     use Lockable;
-    public function create(array $data){
+
+    public function create(array $data)
+    {
         return $this->lockForCreate(function () use ($data) {
             $data['password'] = Hash::make($data['password']);
+
             return User::create($data);
         });
     }
 
-    public function update(array $data){
+    public function update(array $data)
+    {
         $user = JWTAuth::user();
-        return $this->lockForUpdate(User::class, $user->id, function ($lockedUser) use ($data, $user) {
+
+        return $this->lockForUpdate(User::class, $user->id, function ($lockedUser) use ($data) {
             $lockedUser->update($data);
 
             return $lockedUser;
@@ -29,17 +34,19 @@ class UserRepository
     public function markEmailAsVerified(string $email)
     {
         $user = $this->findByEmail($email);
-        return $this->lockForUpdate(User::class, $user->id, function ($lockedUser) use ($user) {
-           $lockedUser->update(['email_verified_at' => now()]);
 
-           return $lockedUser;
+        return $this->lockForUpdate(User::class, $user->id, function ($lockedUser) {
+            $lockedUser->update(['email_verified_at' => now()]);
+
+            return $lockedUser;
         });
     }
 
     public function updatePassword(string $email, string $password)
     {
         $user = $this->findByEmail($email);
-        return $this->lockForUpdate(User::class, $user->id, function ($lockedUser) use ($password, $user) {
+
+        return $this->lockForUpdate(User::class, $user->id, function ($lockedUser) use ($password) {
             $password = Hash::make($password);
             $lockedUser->update(['password' => $password]);
 
@@ -50,7 +57,8 @@ class UserRepository
     public function setFcmToken(string $fcm_token)
     {
         $user = JWTAuth::user();
-        return $this->lockForUpdate(User::class, $user->id, function ($lockedUser) use ($fcm_token, $user) {
+
+        return $this->lockForUpdate(User::class, $user->id, function ($lockedUser) use ($fcm_token) {
             $lockedUser->update(['fcm_token' => $fcm_token]);
 
             return $lockedUser;
@@ -60,7 +68,8 @@ class UserRepository
     public function delete()
     {
         $user = JWTAuth::user();
-        return $this->lockForDelete(User::class, $user->id, function ($lockedUser) use ($user) {
+
+        return $this->lockForDelete(User::class, $user->id, function ($lockedUser) {
             return $lockedUser->delete();
         });
     }

@@ -13,9 +13,13 @@ class OTPNotification extends Notification implements ShouldQueue
     use Queueable;
 
     public $message;
+
     public $subject;
+
     public $fromEmail;
+
     public $mailer;
+
     private $otp;
 
     /**
@@ -25,12 +29,13 @@ class OTPNotification extends Notification implements ShouldQueue
     {
         $this->fromEmail = env('MAIL_FROM_ADDRESS');
         $this->mailer = env('MAIL_MAILER');
-        $this->otp = new Otp();
+        $this->otp = new Otp;
         $this->subject = $subject;
-        if($subject == 'emailVerify')
+        if ($subject == 'emailVerify') {
             $this->message = 'Use this code to verify your email within 2 minutes';
-        else
+        } else {
             $this->message = 'Use this code to reset password within 2 minutes';
+        }
     }
 
     /**
@@ -49,12 +54,13 @@ class OTPNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         $otp = $this->otp->generate($notifiable->email, 'numeric', 6, 2);
+
         return (new MailMessage)
-                    ->mailer($this->mailer)
-                    ->subject($this->subject)
-                    ->greeting('Hello '.$notifiable->first_name.' '.$notifiable->last_name.'!')
-                    ->line($this->message)
-                    ->line($otp->token);
+            ->mailer($this->mailer)
+            ->subject($this->subject)
+            ->greeting('Hello '.$notifiable->first_name.' '.$notifiable->last_name.'!')
+            ->line($this->message)
+            ->line($otp->token);
     }
 
     /**

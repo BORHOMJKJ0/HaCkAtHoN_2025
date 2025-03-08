@@ -2,12 +2,9 @@
 
 namespace App\Http\Requests\User;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use App\Helpers\ResponseHelper;
-use Illuminate\Contracts\Validation\Validator;
+use App\Http\Requests\BaseRequest;
 
-class ResendOTPRequest extends FormRequest
+class ResendOTPRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,17 +24,5 @@ class ResendOTPRequest extends FormRequest
         return [
             'email' => 'required|email|exists:users,email',
         ];
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(
-            ResponseHelper::jsonResponse(
-                $validator->errors(),
-                'Validation failed',
-                400,
-                false
-            )
-        );
     }
 }

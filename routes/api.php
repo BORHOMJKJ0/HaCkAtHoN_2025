@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\User\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::prefix('user')->controller( UserController::class)->group(function () {
-    Route::post('register','register');
+Route::prefix('user')->controller(UserController::class)->group(function () {
+    Route::post('register', 'register');
     Route::post('emailVerify', 'emailVerify');
     Route::post('resendOTP', 'resendOTP');
     Route::post('refreshToken', 'refreshToken');
@@ -24,7 +23,7 @@ Route::prefix('user')->controller( UserController::class)->group(function () {
     Route::post('resetPassword', 'resetPassword');
 });
 Route::middleware(['jwt.verify:api', 'email.verify'])->group(function () {
-    Route::prefix('user')->controller( UserController::class)->group(function () {
+    Route::prefix('user')->controller(UserController::class)->group(function () {
         Route::get('profile', 'getProfile');
         Route::post('update', 'updateProfile');
         Route::post('logout', 'logout');

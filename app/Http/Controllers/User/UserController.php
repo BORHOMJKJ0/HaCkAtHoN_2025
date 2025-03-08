@@ -16,7 +16,9 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     protected $userService;
-    public function __construct(UserService $userService){
+
+    public function __construct(UserService $userService)
+    {
         $this->userService = $userService;
     }
 
@@ -25,10 +27,13 @@ class UserController extends Controller
      *     path="/user/register",
      *     summary="Create new account",
      *     tags={"User"},
+     *
      *     @OA\RequestBody(
      *         required=true,
      *         description="User data",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="first_name", type="string", example="Nour alden"),
      *             @OA\Property(property="last_name", type="string", example="khlil"),
      *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
@@ -41,10 +46,13 @@ class UserController extends Controller
      *             @OA\Property(property="image", type="string", format="binary", example="")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=201,
      *         description="User registered successfully",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="first_name", type="string", example="Nour alden"),
      *             @OA\Property(property="last_name", type="string", example="khlil"),
      *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
@@ -55,6 +63,7 @@ class UserController extends Controller
      *             @OA\Property(property="image", type="string", format="url", example="https://example.com/images/photo.jpg")
      *         )
      *     ),
+     *
      *     @OA\Response(response=400, description="Bad Request")
      * )
      */
@@ -68,14 +77,18 @@ class UserController extends Controller
      *     path="/user/emailVerify",
      *     summary="Account verification using a OTP",
      *     tags={"User"},
+     *
      *     @OA\RequestBody(
      *         required=true,
      *         description="Account verification information",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
      *             @OA\Property(property="otp", type="string", example="123456")
      *         )
      *     ),
+     *
      *     @OA\Response(response=200, description="Email Verified successfully"),
      *     @OA\Response(response=400, description="Bad Request")
      * )
@@ -90,20 +103,26 @@ class UserController extends Controller
      *     path="/user/login",
      *     summary="Log in using email and password",
      *     tags={"User"},
+     *
      *     @OA\RequestBody(
      *         required=true,
      *         description="Login information",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
      *             @OA\Property(property="password", type="string", example="1234567890"),
      *             @OA\Property(property="fcm_token", type="string", example="dpTcAzVoQFil-nyJYaTJd7:APA91bGmhBPVV1MtbKFGrYcIqyMaEycdGXPzOgahYSfM3iLaYQTXQGSG5D-YomRDo7-VqvxWsJOYTYYG3Ae_btPHnZZ_b6XoNahkdo7B5bO4sk-I6AeP7_Q"),
      *             @OA\Property(property="remember_me", type="boolean", example=true)
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Logged in successfully",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="first_name", type="string", example="Nour alden"),
      *             @OA\Property(property="last_name", type="string", example="khlil"),
      *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
@@ -115,6 +134,7 @@ class UserController extends Controller
      *             @OA\Property(property="token", type="string", example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."),
      *         )
      *     ),
+     *
      *     @OA\Response(response=401, description="Incorrect password"),
      *     @OA\Response(response=400, description="Bad Request")
      * )
@@ -130,6 +150,7 @@ class UserController extends Controller
      *     summary="Log out of account",
      *     tags={"User"},
      *     security={{"bearerAuth": {}}},
+     *
      *     @OA\Response(response=200, description="Logged out successfully"),
      *     @OA\Response(response=401, description="Unauthorized"),
      *     @OA\Response(response=400, description="Bad Request")
@@ -146,8 +167,11 @@ class UserController extends Controller
      *     summary="Show user profile",
      *     tags={"User"},
      *     security={{"bearerAuth": {}}},
+     *
      *     @OA\Response(response=200, description="Get profile successfully",
+     *
      *          @OA\JsonContent(
+     *
      *              @OA\Property(property="first_name", type="string", example="Nour alden"),
      *              @OA\Property(property="last_name", type="string", example="khlil"),
      *              @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
@@ -158,6 +182,7 @@ class UserController extends Controller
      *              @OA\Property(property="image", type="string", format="url", example="https://example.com/images/photo.jpg")
      *          )
      * ),
+     *
      *     @OA\Response(response=401, description="Unauthorized")
      * )
      */
@@ -172,10 +197,13 @@ class UserController extends Controller
      *     summary="Update user information",
      *     tags={"User"},
      *     security={{"bearerAuth": {}}},
+     *
      *     @OA\RequestBody(
      *         required=true,
      *         description="New data",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="first_name", type="string", example="Nour alden"),
      *             @OA\Property(property="last_name", type="string", example="khlil"),
      *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
@@ -186,10 +214,13 @@ class UserController extends Controller
      *             @OA\Property(property="image", type="string", format="binary", example="")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=201,
      *         description="Profile updated successfully",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="first_name", type="string", example="Nour alden"),
      *             @OA\Property(property="last_name", type="string", example="khlil"),
      *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
@@ -200,6 +231,7 @@ class UserController extends Controller
      *             @OA\Property(property="image", type="string", format="url", example="https://example.com/images/photo.jpg")
      *         )
      *     ),
+     *
      *     @OA\Response(response=401, description="Unauthorized"),
      *     @OA\Response(response=400, description="Bad Request")
      * )
@@ -214,13 +246,17 @@ class UserController extends Controller
      *     path="/user/forgetPassword",
      *     summary="Send a otp to the user to reset the password",
      *     tags={"User"},
+     *
      *     @OA\RequestBody(
      *         required=true,
      *         description="User email",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Check your email for reset password"
@@ -238,16 +274,20 @@ class UserController extends Controller
      *     path="/user/resetPassword",
      *     summary="Reset password using a otp",
      *     tags={"User"},
+     *
      *     @OA\RequestBody(
      *         required=true,
      *         description="Email, new password and otp",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
      *             @OA\Property(property="password", type="string", example="1234567890"),
      *             @OA\Property(property="password_confirmation", type="string", example="1234567890"),
      *             @OA\Property(property="otp", type="string", example="123456")
      *         )
      *     ),
+     *
      *     @OA\Response(response=201, description="Password reset successfully"),
      *     @OA\Response(response=400, description="Bad Request")
      * )
@@ -262,22 +302,28 @@ class UserController extends Controller
      *     path="/user/resendOTP",
      *     summary="Resend a otp to the user to reset the password or email verification, depending on the subject value",
      *     tags={"User"},
+     *
      *      @OA\Parameter(
      *            name="subject",
      *            in="query",
      *            required=true,
      *            description="notification subject",
+     *
      *            @OA\Schema(
      *                type="string"
      *            )
      *        ),
+     *
      *     @OA\RequestBody(
      *         required=true,
      *         description="User email",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="resend OTP successfully"
@@ -296,6 +342,7 @@ class UserController extends Controller
      *     summary="Delete account",
      *     security={{"bearerAuth": {}}},
      *     tags={"User"},
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Account deleted successfully"
@@ -314,13 +361,17 @@ class UserController extends Controller
      *     summary="Refresh jwt after expired it",
      *     security={{"bearerAuth": {}}},
      *     tags={"User"},
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Token refreshed",
+     *
      *         @OA\JsonContent(
+     *
      *              @OA\Property(property="token", type="string", example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."),
      *          )
      *     ),
+     *
      *     @OA\Response(response=401, description="Unauthorized")
      * )
      */
