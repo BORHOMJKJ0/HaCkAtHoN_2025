@@ -6,30 +6,20 @@ use App\Http\Requests\BaseRequest;
 
 class RegisterRequest extends BaseRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'first_name' => 'required|string|unique:users,first_name',
+            'last_name' => 'required|string|unique:users,last_name',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|confirmed',
-            'password_confirmation' => 'required',
-            'phone' => 'required',
-            'address' => 'required',
-            'birth_date' => 'required',
+            'password' => 'required|confirmed|min:6',
+            'password_confirmation' => 'required|same:password',
+            'image' => 'sometimes|nullable',
         ];
     }
 }

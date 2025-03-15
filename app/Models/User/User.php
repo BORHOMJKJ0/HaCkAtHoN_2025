@@ -9,7 +9,7 @@ use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable,HasFactory;
+    use HasFactory,Notifiable;
 
     protected $guarded = [];
 

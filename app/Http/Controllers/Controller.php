@@ -10,8 +10,8 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Info(
  *      version="1.0.0",
- *      title="E-commerce API",
- *      description="API documentation for the E-commerce project",
+ *      title="HaCkAtHoN_2025 API",
+ *      description="API documentation for the HaCkAtHoN_2025",
  *
  *      @OA\Contact(
  *          email="support@yourapi.com"

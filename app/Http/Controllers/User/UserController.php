@@ -23,27 +23,38 @@ class UserController extends Controller
     }
 
     /**
+     * @OA\SecurityScheme(
+     *     securityScheme="bearerAuth",
+     *     type="http",
+     *     scheme="bearer",
+     *     bearerFormat="JWT",
+     *     description="Enter JWT Bearer token in the format 'Bearer {token}'"
+     * )
+     */
+    /**
      * @OA\Post(
-     *     path="/user/register",
-     *     summary="Create new account",
+     *     path="/users/register",
+     *     summary="Create a new user account",
      *     tags={"User"},
      *
      *     @OA\RequestBody(
      *         required=true,
-     *         description="User data",
+     *         description="User registration data",
      *
-     *         @OA\JsonContent(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
      *
-     *             @OA\Property(property="first_name", type="string", example="Nour alden"),
-     *             @OA\Property(property="last_name", type="string", example="khlil"),
-     *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
-     *             @OA\Property(property="password", type="string", example="1234567890"),
-     *             @OA\Property(property="password_confirmation", type="string", example="1234567890"),
-     *             @OA\Property(property="phone", type="string", example="0987654321"),
-     *             @OA\Property(property="address", type="string", example="Syria, Damascus, Al Sayeda Zeinab"),
-     *             @OA\Property(property="birth_date", type="string", example="23/9/2004"),
-     *             @OA\Property(property="gender", type="string", example="Male"),
-     *             @OA\Property(property="image", type="string", format="binary", example="")
+     *             @OA\Schema(
+     *                  type="object",
+     *                  required={"first_name", "last_name", "email", "password", "password_confirmation"},
+     *
+     *                  @OA\Property(property="first_name", type="string", example="Nour alden"),
+     *                  @OA\Property(property="last_name", type="string", example="Khlil"),
+     *                  @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
+     *                 @OA\Property(property="password", type="string", format="password", example="1234567890"),
+     *                  @OA\Property(property="password_confirmation", type="string", format="password", example="1234567890"),
+     *                  @OA\Property(property="image", type="string", format="binary")
+     *             )
      *         )
      *     ),
      *
@@ -53,18 +64,38 @@ class UserController extends Controller
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="first_name", type="string", example="Nour alden"),
-     *             @OA\Property(property="last_name", type="string", example="khlil"),
-     *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
-     *             @OA\Property(property="phone", type="string", example="0987654321"),
-     *             @OA\Property(property="address", type="string", example="Syria, Damascus, Al Sayeda Zeinab"),
-     *             @OA\Property(property="birth_date", type="string", example="23/9/2004"),
-     *             @OA\Property(property="gender", type="string", example="Male"),
-     *             @OA\Property(property="image", type="string", format="url", example="https://example.com/images/photo.jpg")
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="User registered successfully! ,check your email for verification code"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="user", type="object",
+     *                     @OA\Property(property="first_name", type="string", example="Nour alden"),
+     *                     @OA\Property(property="last_name", type="string", example="Khlil"),
+     *                     @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
+     *                     @OA\Property(property="image", type="string", format="url", example="https://ip:8000/storage/images/photo.jpg")
+     *                 )
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=201)
      *         )
      *     ),
      *
-     *     @OA\Response(response=400, description="Bad Request")
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation failed",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Validation failed"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="first_name", type="string", example="The first name has already been taken."),
+     *                 @OA\Property(property="last_name", type="string", example="The last name has already been taken."),
+     *                 @OA\Property(property="email", type="string", example="The email has already been taken."),
+     *                 @OA\Property(property="password", type="string", example="The password field confirmation does not match."),
+     *                 @OA\Property(property="password_confirmation", type="string", example="The password confirmation field must match password."),
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=400)
+     *         )
+     *     )
      * )
      */
     public function register(RegisterRequest $request)
@@ -74,23 +105,50 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/user/emailVerify",
-     *     summary="Account verification using a OTP",
+     *     path="/users/emailVerify",
+     *     summary="Account verification using an OTP",
      *     tags={"User"},
      *
      *     @OA\RequestBody(
      *         required=true,
      *         description="Account verification information",
      *
-     *         @OA\JsonContent(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
      *
-     *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
-     *             @OA\Property(property="otp", type="string", example="123456")
+     *             @OA\Schema(
+     *                 type="object",
+     *                 required={"email", "otp"},
+     *
+     *                 @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
+     *                 @OA\Property(property="otp", type="string", example="123456")
+     *             )
      *         )
      *     ),
      *
-     *     @OA\Response(response=200, description="Email Verified successfully"),
-     *     @OA\Response(response=400, description="Bad Request")
+     *     @OA\Response(
+     *         response=200,
+     *         description="Email Verified successfully",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Email Verified successfully, You can use the app now"),
+     *             @OA\Property(property="status_code", type="integer", example=200)
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Bad Request"),
+     *             @OA\Property(property="status_code", type="integer", example=400)
+     *         )
+     *     )
      * )
      */
     public function emailVerify(EmailVerifyRequest $request)
@@ -100,7 +158,7 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/user/login",
+     *     path="/users/login",
      *     summary="Log in using email and password",
      *     tags={"User"},
      *
@@ -108,12 +166,18 @@ class UserController extends Controller
      *         required=true,
      *         description="Login information",
      *
-     *         @OA\JsonContent(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
      *
-     *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
-     *             @OA\Property(property="password", type="string", example="1234567890"),
-     *             @OA\Property(property="fcm_token", type="string", example="dpTcAzVoQFil-nyJYaTJd7:APA91bGmhBPVV1MtbKFGrYcIqyMaEycdGXPzOgahYSfM3iLaYQTXQGSG5D-YomRDo7-VqvxWsJOYTYYG3Ae_btPHnZZ_b6XoNahkdo7B5bO4sk-I6AeP7_Q"),
-     *             @OA\Property(property="remember_me", type="boolean", example=true)
+     *             @OA\Schema(
+     *                 type="object",
+     *                 required={"email", "password"},
+     *
+     *                 @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
+     *                 @OA\Property(property="password", type="string", example="1234567890"),
+     *                 @OA\Property(property="fcm_token", type="string", example="dpTcAzVoQFil-nyJYaTJd7:APA91bGmhBPVV1MtbKFGrYcIqyMaEycdGXPzOgahYSfM3iLaYQTXQGSG5D-YomRDo7-VqvxWsJOYTYYG3Ae_btPHnZZ_b6XoNahkdo7B5bO4sk-I6AeP7_Q"),
+     *                 @OA\Property(property="remember_me", type="boolean", example=true)
+     *             )
      *         )
      *     ),
      *
@@ -123,20 +187,48 @@ class UserController extends Controller
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="first_name", type="string", example="Nour alden"),
-     *             @OA\Property(property="last_name", type="string", example="khlil"),
-     *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
-     *             @OA\Property(property="phone", type="string", example="0987654321"),
-     *             @OA\Property(property="address", type="string", example="Syria, Damascus, Al Sayeda Zeinab"),
-     *             @OA\Property(property="birth_date", type="string", example="23/9/2004"),
-     *             @OA\Property(property="gender", type="string", example="Male"),
-     *             @OA\Property(property="image", type="string", format="url", example="https://example.com/images/photo.jpg"),
-     *             @OA\Property(property="token", type="string", example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."),
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Logged in successfully"),
+     *             @OA\Property(property="status_code", type="integer", example=200),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="user", type="object",
+     *                     @OA\Property(property="first_name", type="string", example="Omar"),
+     *                     @OA\Property(property="last_name", type="string", example="Borhom"),
+     *                     @OA\Property(property="email", type="string", example="habuazan@gmail.com"),
+     *                     @OA\Property(property="image", type="string", format="url", example="http://127.0.0.1:8000/storage/images/tfg43fGPSvMYQ3AGZsJFtYTrqCxibGHSiaRSaZpk.png")
+     *                 ),
+     *                 @OA\Property(property="token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...")
+     *             )
      *         )
      *     ),
      *
-     *     @OA\Response(response=401, description="Incorrect password"),
-     *     @OA\Response(response=400, description="Bad Request")
+     *     @OA\Response(
+     *         response=401,
+     *         description="Incorrect password",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Incorrect password"),
+     *             @OA\Property(property="status_code", type="integer", example=401)
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation failed",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Validation failed"),
+     *             @OA\Property(property="status_code", type="integer", example=400),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="email", type="string", example="The selected email is invalid."),
+     *                 @OA\Property(property="remember_me", type="string", example="The selected remember me is invalid.")
+     *             )
+     *         )
+     *     )
      * )
      */
     public function login(LoginRequest $request)
@@ -146,14 +238,42 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/user/logout",
+     *     path="/users/logout",
      *     summary="Log out of account",
      *     tags={"User"},
      *     security={{"bearerAuth": {}}},
      *
-     *     @OA\Response(response=200, description="Logged out successfully"),
-     *     @OA\Response(response=401, description="Unauthorized"),
-     *     @OA\Response(response=400, description="Bad Request")
+     *     @OA\RequestBody(
+     *         required=false,
+     *
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data"
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Logged out successfully",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Logged out successfully!"),
+     *             @OA\Property(property="status_code", type="integer", example=200)
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Unauthenticated"),
+     *             @OA\Property(property="status_code", type="integer", example=401)
+     *         )
+     *     )
      * )
      */
     public function logout(Request $request)
@@ -163,27 +283,42 @@ class UserController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/user/profile",
+     *     path="/users/profile",
      *     summary="Show user profile",
      *     tags={"User"},
      *     security={{"bearerAuth": {}}},
      *
-     *     @OA\Response(response=200, description="Get profile successfully",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Get profile successfully",
      *
-     *          @OA\JsonContent(
+     *         @OA\JsonContent(
      *
-     *              @OA\Property(property="first_name", type="string", example="Nour alden"),
-     *              @OA\Property(property="last_name", type="string", example="khlil"),
-     *              @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
-     *              @OA\Property(property="phone", type="string", example="0987654321"),
-     *              @OA\Property(property="address", type="string", example="Syria, Damascus, Al Sayeda Zeinab"),
-     *              @OA\Property(property="birth_date", type="string", example="23/9/2004"),
-     *              @OA\Property(property="gender", type="string", example="Male"),
-     *              @OA\Property(property="image", type="string", format="url", example="https://example.com/images/photo.jpg")
-     *          )
-     * ),
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Get profile successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="user", type="object",
+     *                     @OA\Property(property="first_name", type="string", example="Omar"),
+     *                     @OA\Property(property="last_name", type="string", example="Borhom"),
+     *                     @OA\Property(property="email", type="string", example="habuazan@gmail.com"),
+     *                     @OA\Property(property="image", type="string", format="url", example="http://127.0.0.1:8000/storage/images/tfg43fGPSvMYQ3AGZsJFtYTrqCxibGHSiaRSaZpk.png")
+     *                 )
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=200)
+     *         )
+     *     ),
      *
-     *     @OA\Response(response=401, description="Unauthorized")
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Unauthenticated"),
+     *             @OA\Property(property="status_code", type="integer", example=401)
+     *         )
+     *     )
      * )
      */
     public function getProfile()
@@ -193,25 +328,25 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/user/update",
+     *     path="/users/update",
      *     summary="Update user information",
      *     tags={"User"},
      *     security={{"bearerAuth": {}}},
      *
      *     @OA\RequestBody(
      *         required=true,
-     *         description="New data",
+     *         description="Update Profile Data",
      *
-     *         @OA\JsonContent(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
      *
-     *             @OA\Property(property="first_name", type="string", example="Nour alden"),
-     *             @OA\Property(property="last_name", type="string", example="khlil"),
-     *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
-     *             @OA\Property(property="phone", type="string", example="0987654321"),
-     *             @OA\Property(property="address", type="string", example="Syria, Damascus, Al Sayeda Zeinab"),
-     *             @OA\Property(property="birth_date", type="string", example="23/9/2004"),
-     *             @OA\Property(property="gender", type="string", example="Male"),
-     *             @OA\Property(property="image", type="string", format="binary", example="")
+     *             @OA\Schema(
+     *
+     *                 @OA\Property(property="first_name", type="string", example="Nour alden"),
+     *                 @OA\Property(property="last_name", type="string", example="khlil"),
+     *                 @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
+     *                 @OA\Property(property="image", type="string", format="binary")
+     *             )
      *         )
      *     ),
      *
@@ -221,19 +356,46 @@ class UserController extends Controller
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="first_name", type="string", example="Nour alden"),
-     *             @OA\Property(property="last_name", type="string", example="khlil"),
-     *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
-     *             @OA\Property(property="phone", type="string", example=""),
-     *             @OA\Property(property="address", type="string", example="S0987654321yria, Damascus, Al Sayeda Zeinab"),
-     *             @OA\Property(property="birth_date", type="string", example="23/9/2004"),
-     *             @OA\Property(property="gender", type="string", example="Male"),
-     *             @OA\Property(property="image", type="string", format="url", example="https://example.com/images/photo.jpg")
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Profile updated successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="user", type="object",
+     *                     @OA\Property(property="first_name", type="string", example="nour"),
+     *                     @OA\Property(property="last_name", type="string", example="Uncle"),
+     *                     @OA\Property(property="email", type="string", example="habuazan@gmail.com"),
+     *                     @OA\Property(property="image", type="string", format="url", example="http://127.0.0.1:8000/storage/images/V9DsnWtuMGaiQUKng05Zavz5NaGNL6qSFewAGzLn.png")
+     *                 )
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=201)
      *         )
      *     ),
      *
-     *     @OA\Response(response=401, description="Unauthorized"),
-     *     @OA\Response(response=400, description="Bad Request")
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation failed",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Validation failed"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="first_name", type="string", example="The first_name field format is invalid."),
+     *                 @OA\Property(property="last_name", type="string", example="The last_name field format is invalid.")
+     *             )
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Unauthenticated"),
+     *             @OA\Property(property="status_code", type="integer", example=401)
+     *         )
+     *     )
      * )
      */
     public function updateProfile(UpdateProfileRequest $request)
@@ -243,25 +405,50 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/user/forgetPassword",
-     *     summary="Send a otp to the user to reset the password",
+     *     path="/users/forgetPassword",
+     *     summary="Send an OTP to the user to reset the password",
      *     tags={"User"},
      *
      *     @OA\RequestBody(
      *         required=true,
      *         description="User email",
      *
-     *         @OA\JsonContent(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
      *
-     *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com")
+     *             @OA\Schema(
+     *
+     *                 @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com")
+     *             )
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=200,
-     *         description="Check your email for reset password"
+     *         description="Check your email for reset password",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Check your email for reset password!"),
+     *             @OA\Property(property="status_code", type="integer", example=200)
+     *         )
      *     ),
-     *     @OA\Response(response=400, description="Bad Request")
+     *
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Validation failed"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="email", type="string", example="The selected email is invalid.")
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=400)
+     *         )
+     *     )
      * )
      */
     public function forgetPassword(ForgetPasswordRequest $request)
@@ -271,25 +458,55 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/user/resetPassword",
-     *     summary="Reset password using a otp",
+     *     path="/users/resetPassword",
+     *     summary="Reset password using an OTP",
      *     tags={"User"},
      *
      *     @OA\RequestBody(
      *         required=true,
-     *         description="Email, new password and otp",
+     *         description="Email, new password, password confirmation, and OTP",
      *
-     *         @OA\JsonContent(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
      *
-     *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
-     *             @OA\Property(property="password", type="string", example="1234567890"),
-     *             @OA\Property(property="password_confirmation", type="string", example="1234567890"),
-     *             @OA\Property(property="otp", type="string", example="123456")
+     *             @OA\Schema(
+     *
+     *                 @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
+     *                 @OA\Property(property="password", type="string", format="password", example="1234567890"),
+     *                 @OA\Property(property="password_confirmation", type="string", format="password", example="1234567890"),
+     *                 @OA\Property(property="otp", type="integer", example=123456)
+     *             )
      *         )
      *     ),
      *
-     *     @OA\Response(response=201, description="Password reset successfully"),
-     *     @OA\Response(response=400, description="Bad Request")
+     *     @OA\Response(
+     *         response=201,
+     *         description="Password reset successfully",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Password reset successfully!"),
+     *             @OA\Property(property="status_code", type="integer", example=201)
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Validation failed"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="email", type="string", example="The selected email is invalid."),
+     *                 @OA\Property(property="password", type="string", example="The password field confirmation does not match."),
+     *                 @OA\Property(property="otp", type="string", example="The otp field must be a number.")
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=400)
+     *         )
+     *     )
      * )
      */
     public function resetPassword(ResetPasswordRequest $request)
@@ -299,36 +516,63 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/user/resendOTP",
-     *     summary="Resend a otp to the user to reset the password or email verification, depending on the subject value",
+     *     path="/users/resendOTP",
+     *     summary="Resend an OTP for password reset or email verification",
      *     tags={"User"},
      *
-     *      @OA\Parameter(
-     *            name="subject",
-     *            in="query",
-     *            required=true,
-     *            description="notification subject",
+     *     @OA\Parameter(
+     *         name="subject",
+     *         in="query",
+     *         required=true,
+     *         description="Notification subject (Allowed values: resetPassword, emailVerify)",
      *
-     *            @OA\Schema(
-     *                type="string"
-     *            )
-     *        ),
+     *         @OA\Schema(
+     *             type="string",
+     *             enum={"resetPassword", "emailVerify"}
+     *         )
+     *     ),
      *
      *     @OA\RequestBody(
      *         required=true,
      *         description="User email",
      *
-     *         @OA\JsonContent(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
      *
-     *             @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com")
+     *             @OA\Schema(
+     *
+     *                 @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com")
+     *             )
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=200,
-     *         description="resend OTP successfully"
+     *         description="Resend OTP successfully",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Resend OTP successfully!"),
+     *             @OA\Property(property="status_code", type="integer", example=200)
+     *         )
      *     ),
-     *     @OA\Response(response=400, description="Bad Request")
+     *
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Validation failed"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="email", type="string", example="The selected email is invalid."),
+     *                 @OA\Property(property="subject", type="string", example="The selected subject is invalid.")
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=400)
+     *         )
+     *     )
      * )
      */
     public function resendOTP(ResendOTPRequest $request)
@@ -338,16 +582,34 @@ class UserController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/user/delete",
-     *     summary="Delete account",
+     *     path="/users/delete",
+     *     summary="Delete user account",
      *     security={{"bearerAuth": {}}},
      *     tags={"User"},
      *
      *     @OA\Response(
      *         response=200,
-     *         description="Account deleted successfully"
+     *         description="Account deleted successfully",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Account deleted successfully!"),
+     *             @OA\Property(property="status_code", type="integer", example=200)
+     *         )
      *     ),
-     *     @OA\Response(response=401, description="Unauthorized")
+     *
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Unauthenticated"),
+     *             @OA\Property(property="status_code", type="integer", example=401)
+     *         )
+     *     )
      * )
      */
     public function deleteAccount()
@@ -357,10 +619,23 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/user/refreshToken",
-     *     summary="Refresh jwt after expired it",
-     *     security={{"bearerAuth": {}}},
+     *     path="/users/refreshToken",
+     *     summary="Refresh JWT after expiration",
      *     tags={"User"},
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Old JWT token",
+     *
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *
+     *             @OA\Schema(
+     *
+     *                 @OA\Property(property="token", type="string", example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
+     *             )
+     *         )
+     *     ),
      *
      *     @OA\Response(
      *         response=200,
@@ -368,11 +643,45 @@ class UserController extends Controller
      *
      *         @OA\JsonContent(
      *
-     *              @OA\Property(property="token", type="string", example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."),
-     *          )
+     *              @OA\Property(property="successful", type="boolean", example=true),
+     *              @OA\Property(property="message", type="string", example="Token refreshed"),
+     *              @OA\Property(property="data", type="object",
+     *                  @OA\Property(property="token", type="string", example="new.jwt.token.here")
+     *              ),
+     *              @OA\Property(property="status_code", type="integer", example=200)
+     *         )
      *     ),
      *
-     *     @OA\Response(response=401, description="Unauthorized")
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized responses",
+     *
+     *         @OA\JsonContent(
+     *             oneOf={
+     *
+     *                 @OA\Schema(
+     *
+     *                     @OA\Property(property="successful", type="boolean", example=false),
+     *                     @OA\Property(property="message", type="string", example="Unauthenticated"),
+     *                     @OA\Property(property="status_code", type="integer", example=401)
+     *                 ),
+     *
+     *                 @OA\Schema(
+     *
+     *                     @OA\Property(property="successful", type="boolean", example=false),
+     *                     @OA\Property(property="message", type="string", example="Invalid token"),
+     *                     @OA\Property(property="status_code", type="integer", example=401)
+     *                 ),
+     *
+     *                 @OA\Schema(
+     *
+     *                     @OA\Property(property="successful", type="boolean", example=false),
+     *                     @OA\Property(property="message", type="string", example="Expired token"),
+     *                     @OA\Property(property="status_code", type="integer", example=401)
+     *                 )
+     *             }
+     *         )
+     *     )
      * )
      */
     public function refreshToken(Request $request)
