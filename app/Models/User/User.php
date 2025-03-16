@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use App\Models\Chat\Chat;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -44,5 +45,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function chats()
+    {
+        return $this->hasMany(Chat::class);
     }
 }

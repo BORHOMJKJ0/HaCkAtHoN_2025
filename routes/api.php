@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Chat\ChatController;
+use App\Http\Controllers\Type\TypeController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,4 +31,9 @@ Route::middleware(['jwt.verify:api', 'email.verify'])->group(function () {
         Route::post('logout', 'logout');
         Route::delete('delete', 'deleteAccount');
     });
+    Route::prefix('types')->controller(TypeController::class)->group(function () {
+        Route::get('/', 'index');
+        Route::get('/{type}', 'show');
+    });
+    Route::apiResource('chats', ChatController::class);
 });

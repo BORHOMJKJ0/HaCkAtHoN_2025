@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Chat\ChatSeeder;
+use Database\Seeders\Type\TypeSeeder;
 use Database\Seeders\User\UserSeeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +15,8 @@ class DatabaseSeeder extends Seeder
         DB::transaction(function () {
             $this->call([
                 UserSeeder::class,
+                ChatSeeder::class,
+                TypeSeeder::class,
             ]);
         });
     }
