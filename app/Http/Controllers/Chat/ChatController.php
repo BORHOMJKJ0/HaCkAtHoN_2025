@@ -17,6 +17,16 @@ class ChatController extends Controller
         $this->chatService = $chatService;
     }
 
+ /**
+  * @OA\SecurityScheme(
+  *     securityScheme="bearerAuth",
+  *     type="http",
+  *     scheme="bearer",
+  *     bearerFormat="JWT",
+  *     description="Enter JWT Bearer token in the format 'Bearer {token}'"
+  * )
+  */
+
     public function index(Request $request): JsonResponse
     {
         return $this->chatService->getAllChats($request);
