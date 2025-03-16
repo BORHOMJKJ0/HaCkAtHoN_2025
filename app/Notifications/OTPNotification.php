@@ -53,7 +53,7 @@ class OTPNotification extends Notification implements ShouldQueue
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $otp = $this->otp->generate($notifiable->email, 'numeric', 6, 2);
+        $otp = $this->otp->generate($notifiable->email, 'numeric', 5, 2);
 
         return (new MailMessage)
             ->mailer($this->mailer)
