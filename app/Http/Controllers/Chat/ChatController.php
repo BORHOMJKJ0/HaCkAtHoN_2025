@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Chat;
 
 use App\Http\Controllers\Controller;
 use App\Models\Chat\Chat;
-use App\Services\Chat\TypeService;
+use App\Services\Chat\ChatService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -12,7 +12,7 @@ class ChatController extends Controller
 {
     protected $chatService;
 
-    public function __construct(TypeService $chatService)
+    public function __construct(ChatService $chatService)
     {
         $this->chatService = $chatService;
     }
