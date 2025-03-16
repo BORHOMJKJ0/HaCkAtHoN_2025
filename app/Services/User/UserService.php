@@ -142,7 +142,7 @@ class UserService
             'user' => UserResource::make($user),
         ];
 
-        return ResponseHelper::jsonResponse($data, 'profile updated successfully', 201);
+        return ResponseHelper::jsonResponse($data, 'profile updated successfully');
     }
 
     /**
