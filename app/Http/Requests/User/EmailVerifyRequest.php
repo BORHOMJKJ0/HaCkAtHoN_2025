@@ -16,7 +16,7 @@ class EmailVerifyRequest extends BaseRequest
     {
         return [
             'email' => 'required|email|exists:users,email',
-            'otp' => ['required', 'numeric', 'digits:6', function ($attribute, $value, $fail) {
+            'otp' => ['required', 'numeric', 'digits:5', function ($attribute, $value, $fail) {
                 $otp = new Otp;
                 $isValid = $otp->validate(request('email'), $value);
 

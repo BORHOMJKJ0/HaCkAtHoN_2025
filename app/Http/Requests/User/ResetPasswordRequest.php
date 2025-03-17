@@ -18,7 +18,7 @@ class ResetPasswordRequest extends BaseRequest
             'email' => 'required|email|exists:users,email',
             'password' => 'required|confirmed',
             'password_confirmation' => 'required',
-            'otp' => ['required', 'numeric', 'digits:6', function ($attribute, $value, $fail) {
+            'otp' => ['required', 'numeric', 'digits:5', function ($attribute, $value, $fail) {
                 $otp = new Otp;
                 $isValid = $otp->validate(request('email'), $value);
 
