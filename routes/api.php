@@ -1,8 +1,7 @@
 <?php
 
 use App\Http\Controllers\Chat\ChatController;
-use App\Http\Controllers\Question\MainQuestionController;
-use App\Http\Controllers\Question\SubQuestionController;
+use App\Http\Controllers\Message\MessageController;
 use App\Http\Controllers\Type\TypeController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -38,16 +37,5 @@ Route::middleware(['jwt.verify:api', 'email.verify'])->group(function () {
         Route::get('/{type}', 'show');
     });
     Route::apiResource('chats', ChatController::class);
-    Route::prefix('questions')->controller(MainQuestionController::class)->group(function (){
-        Route::prefix('main')->group(function (){
-            Route::get('{chat}', 'getQuestionsByChatId');
-            Route::post('{chat}','addQuestion');
-            Route::delete('{mainQuestion}', 'deleteQuestion');
-        });
-        Route::prefix('sub')->controller(SubQuestionController::class)->group(function (){
-            Route::get('{mainQuestion}', 'getQuestionsByMainQuestionId');
-            Route::post('{mainQuestion}','addQuestion');
-            Route::delete('{subQuestion}', 'deleteQuestion');
-        });
-    });
+    Route::apiResource('messages', MessageController::class);
 });

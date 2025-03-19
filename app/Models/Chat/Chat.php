@@ -2,7 +2,7 @@
 
 namespace App\Models\Chat;
 
-use App\Models\Question\MainQuestion;
+use App\Models\Message\Message;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,8 +18,8 @@ class Chat extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function mainQuestions()
+    public function messages()
     {
-        return $this->hasMany(MainQuestion::class);
+        return $this->hasMany(Message::class);
     }
 }

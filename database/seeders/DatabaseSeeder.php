@@ -3,8 +3,7 @@
 namespace Database\Seeders;
 
 use Database\Seeders\Chat\ChatSeeder;
-use Database\Seeders\Question\MainQuestionSeeder;
-use Database\Seeders\Question\SubQuestionSeeder;
+use Database\Seeders\Message\MessageSeeder;
 use Database\Seeders\Type\TypeSeeder;
 use Database\Seeders\User\UserSeeder;
 use Illuminate\Database\Seeder;
@@ -19,8 +18,7 @@ class DatabaseSeeder extends Seeder
                 UserSeeder::class,
                 ChatSeeder::class,
                 TypeSeeder::class,
-                MainQuestionSeeder::class,
-                SubQuestionSeeder::class,
+                MessageSeeder::class,
             ]);
         });
     }

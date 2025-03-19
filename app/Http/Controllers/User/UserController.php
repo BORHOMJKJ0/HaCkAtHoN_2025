@@ -332,12 +332,16 @@ class UserController extends Controller
      *     summary="Update user information",
      *     tags={"User"},
      *     security={{"bearerAuth": {}}},
+     *
      *     @OA\RequestBody(
      *         required=true,
      *         description="Update Profile Data",
+     *
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
+     *
      *             @OA\Schema(
+     *
      *                 @OA\Property(property="first_name", type="string", example="Nour alden"),
      *                 @OA\Property(property="last_name", type="string", example="Khlil"),
      *                 @OA\Property(property="email", type="string", example="khlilnoor0@gmail.com"),
@@ -345,10 +349,13 @@ class UserController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Profile updated successfully",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="successful", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Profile updated successfully"),
      *             @OA\Property(property="data", type="object",
@@ -362,10 +369,13 @@ class UserController extends Controller
      *             @OA\Property(property="status_code", type="integer", example=200)
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=400,
      *         description="Validation failed",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="successful", type="boolean", example=false),
      *             @OA\Property(property="message", type="string", example="Validation failed"),
      *             @OA\Property(property="data", type="object",
@@ -375,10 +385,13 @@ class UserController extends Controller
      *             @OA\Property(property="status_code", type="integer", example=400)
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         description="Unauthorized",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="successful", type="boolean", example=false),
      *             @OA\Property(property="message", type="string", example="Unauthenticated"),
      *             @OA\Property(property="status_code", type="integer", example=401)
@@ -386,7 +399,6 @@ class UserController extends Controller
      *     )
      * )
      */
-
     public function updateProfile(UpdateProfileRequest $request)
     {
         return $this->userService->updateProfile($request);

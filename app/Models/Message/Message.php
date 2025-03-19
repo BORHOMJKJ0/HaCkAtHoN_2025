@@ -1,17 +1,21 @@
 <?php
 
-namespace App\Models\Question;
+namespace App\Models\Message;
 
 use App\Models\Chat\Chat;
 use App\Models\Type\Type;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MainQuestion extends Model
+class Message extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'is_ai' => 'boolean',
+    ];
 
     public function chat()
     {
@@ -21,10 +25,5 @@ class MainQuestion extends Model
     public function type()
     {
         return $this->belongsTo(Type::class);
-    }
-
-    public function subQuestions()
-    {
-        return $this->hasMany(SubQuestion::class);
     }
 }

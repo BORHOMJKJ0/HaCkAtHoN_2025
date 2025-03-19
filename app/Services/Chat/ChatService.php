@@ -40,6 +40,7 @@ class ChatService
 
     public function getChatById(Chat $chat)
     {
+        $this->checkOwnership($chat, 'Chat', 'perform');
         $data = ['Chat' => ChatResource::make($chat)];
 
         return ResponseHelper::jsonResponse($data, 'Chat retrieved successfully!');
@@ -95,7 +96,7 @@ class ChatService
 
     protected function validateChatData(array $data, $rule = 'required'): void
     {
-        $allowedAttributes = ['address', 'guest_name'];
+        $allowedAttributes = ['address', 'name'];
 
         $unexpectedAttributes = array_diff(array_keys($data), $allowedAttributes);
         if (! empty($unexpectedAttributes)) {
@@ -109,8 +110,7 @@ class ChatService
             );
         }
         $validator = Validator::make($data, [
-            'address' => "$rule|string",
-            'guest_name' => "$rule|string",
+            'name' => "$rule|string|unique:chats,name",
         ]);
 
         if ($validator->fails()) {

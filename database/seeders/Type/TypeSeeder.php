@@ -12,10 +12,7 @@ class TypeSeeder extends Seeder
     {
         DB::transaction(function () {
             $types = [
-                'Personal', 'Technical', 'Business', 'Entertainment', 'Health & Wellness',
-                'Science', 'Sports', 'Education', 'Finance', 'History',
-                'Philosophy', 'Psychology', 'Technology', 'Politics', 'Music',
-                'Travel', 'Food & Cooking', 'Art & Culture', 'Lifestyle', 'Self-Improvement',
+                'career', 'scientific', 'subjectivity',
             ];
 
             foreach ($types as $type) {

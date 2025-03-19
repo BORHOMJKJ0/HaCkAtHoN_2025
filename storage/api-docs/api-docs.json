@@ -72,11 +72,7 @@
                                                                 "type": "integer",
                                                                 "example": 11
                                                             },
-                                                            "address": {
-                                                                "type": "string",
-                                                                "example": "University"
-                                                            },
-                                                            "guest_name": {
+                                                            "name": {
                                                                 "type": "string",
                                                                 "example": "Baraa"
                                                             },
@@ -157,15 +153,10 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "address",
-                                    "guest_name"
+                                    "name"
                                 ],
                                 "properties": {
-                                    "address": {
-                                        "type": "string",
-                                        "example": "University"
-                                    },
-                                    "guest_name": {
+                                    "name": {
                                         "type": "string",
                                         "example": "Baraa"
                                     }
@@ -198,11 +189,7 @@
                                                             "type": "integer",
                                                             "example": 11
                                                         },
-                                                        "address": {
-                                                            "type": "string",
-                                                            "example": "University"
-                                                        },
-                                                        "guest_name": {
+                                                        "name": {
                                                             "type": "string",
                                                             "example": "Baraa"
                                                         },
@@ -273,7 +260,7 @@
                         "required": true,
                         "schema": {
                             "type": "integer",
-                            "example": 11
+                            "example": 12
                         }
                     }
                 ],
@@ -298,19 +285,52 @@
                                                     "properties": {
                                                         "id": {
                                                             "type": "integer",
-                                                            "example": 11
+                                                            "example": 12
                                                         },
-                                                        "address": {
-                                                            "type": "string",
-                                                            "example": "University"
-                                                        },
-                                                        "guest_name": {
+                                                        "name": {
                                                             "type": "string",
                                                             "example": "Baraa"
                                                         },
                                                         "created_at": {
                                                             "type": "string",
-                                                            "example": "2 minutes ago"
+                                                            "example": "14 minutes ago"
+                                                        },
+                                                        "messages": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer",
+                                                                        "example": 14
+                                                                    },
+                                                                    "message": {
+                                                                        "type": "string",
+                                                                        "example": "Hello Ouama"
+                                                                    },
+                                                                    "is_ai": {
+                                                                        "type": "boolean",
+                                                                        "example": true
+                                                                    },
+                                                                    "type": {
+                                                                        "properties": {
+                                                                            "id": {
+                                                                                "type": "integer",
+                                                                                "example": 1
+                                                                            },
+                                                                            "type": {
+                                                                                "type": "string",
+                                                                                "example": "career"
+                                                                            }
+                                                                        },
+                                                                        "type": "object"
+                                                                    },
+                                                                    "created_at": {
+                                                                        "type": "string",
+                                                                        "example": "1 minute ago"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            }
                                                         }
                                                     },
                                                     "type": "object"
@@ -408,11 +428,7 @@
                         "application/x-www-form-urlencoded": {
                             "schema": {
                                 "properties": {
-                                    "address": {
-                                        "type": "string",
-                                        "example": "University"
-                                    },
-                                    "guest_name": {
+                                    "name": {
                                         "type": "string",
                                         "example": "Baraa"
                                     }
@@ -445,11 +461,7 @@
                                                             "type": "integer",
                                                             "example": 11
                                                         },
-                                                        "address": {
-                                                            "type": "string",
-                                                            "example": "University"
-                                                        },
-                                                        "guest_name": {
+                                                        "name": {
                                                             "type": "string",
                                                             "example": "Baraa"
                                                         },
@@ -675,156 +687,37 @@
                 ]
             }
         },
-        "/questions/main/{chat}": {
-            "get": {
-                "tags": [
-                    "Questions"
-                ],
-                "summary": "Get questions by chat ID",
-                "operationId": "973ee2bb2c7de2c54d024560dde17145",
-                "parameters": [
-                    {
-                        "name": "chat",
-                        "in": "path",
-                        "description": "ID of the chat",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Questions retrieved successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Questions retrieved successfully"
-                                        },
-                                        "data": {
-                                            "properties": {
-                                                "questions": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "integer",
-                                                                "example": 1
-                                                            },
-                                                            "text": {
-                                                                "type": "string",
-                                                                "example": "How much is your wealth?"
-                                                            }
-                                                        },
-                                                        "type": "object"
-                                                    }
-                                                }
-                                            },
-                                            "type": "object"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 200
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthenticated"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 401
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Chat not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Chat not found"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 404
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
+        "/messages/": {
             "post": {
                 "tags": [
-                    "Questions"
+                    "Messages"
                 ],
-                "summary": "Add a new question to a chat",
-                "operationId": "886af0a1862cb074f4e1685e5b0f07f6",
-                "parameters": [
-                    {
-                        "name": "chat",
-                        "in": "path",
-                        "description": "ID of the chat",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
+                "summary": "Add a new message to a chat",
+                "operationId": "e70221051b86213b7e9b9f415df6ea3f",
                 "requestBody": {
-                    "description": "Question data",
+                    "description": "Message data",
                     "required": true,
                     "content": {
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "text",
+                                    "message",
+                                    "is_ai",
+                                    "chat_id",
                                     "type_id"
                                 ],
                                 "properties": {
-                                    "text": {
+                                    "message": {
                                         "type": "string",
                                         "example": "What is your name?"
+                                    },
+                                    "is_ai": {
+                                        "type": "inteager",
+                                        "example": 0
+                                    },
+                                    "chat_id": {
+                                        "type": "integer",
+                                        "example": 1
                                     },
                                     "type_id": {
                                         "type": "integer",
@@ -838,7 +731,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Question created successfully",
+                        "description": "Message created successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -849,19 +742,23 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Question created successfully"
+                                            "example": "Message created successfully"
                                         },
                                         "data": {
                                             "properties": {
-                                                "question": {
+                                                "Message": {
                                                     "properties": {
                                                         "id": {
                                                             "type": "integer",
-                                                            "example": 1
+                                                            "example": 15
                                                         },
-                                                        "text": {
+                                                        "message": {
                                                             "type": "string",
-                                                            "example": "How much is your wealth?"
+                                                            "example": "Hello Ouama"
+                                                        },
+                                                        "is_ai": {
+                                                            "type": "boolean",
+                                                            "example": true
                                                         },
                                                         "type": {
                                                             "properties": {
@@ -871,10 +768,14 @@
                                                                 },
                                                                 "type": {
                                                                     "type": "string",
-                                                                    "example": "General"
+                                                                    "example": "career"
                                                                 }
                                                             },
                                                             "type": "object"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "example": "1 second ago"
                                                         }
                                                     },
                                                     "type": "object"
@@ -892,8 +793,8 @@
                             }
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized",
+                    "400": {
+                        "description": "Invalid chat ID or type ID",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -904,11 +805,11 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Unauthenticated"
+                                            "example": "The selected chat id is invalid."
                                         },
                                         "status_code": {
                                             "type": "integer",
-                                            "example": 401
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -916,8 +817,8 @@
                             }
                         }
                     },
-                    "404": {
-                        "description": "Chat or Type not found",
+                    "403": {
+                        "description": "Unauthorized to create message",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -928,66 +829,11 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Chat or Type not found"
+                                            "example": "You are not authorized to create this Chat Message . This Chat Message isn't for you"
                                         },
                                         "status_code": {
                                             "type": "integer",
-                                            "example": 404
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/questions/main/{mainQuestion}": {
-            "delete": {
-                "tags": [
-                    "Questions"
-                ],
-                "summary": "Delete a main question",
-                "operationId": "100e711ce192c89860255b30ae1a6390",
-                "parameters": [
-                    {
-                        "name": "mainQuestion",
-                        "in": "path",
-                        "description": "ID of the main question to delete",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Question deleted successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Question deleted successfully"
-                                        },
-                                        "data": {
-                                            "type": "object",
-                                            "example": []
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 200
+                                            "example": 403
                                         }
                                     },
                                     "type": "object"
@@ -1018,30 +864,6 @@
                                 }
                             }
                         }
-                    },
-                    "404": {
-                        "description": "Question not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Question not found"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 404
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
                     }
                 },
                 "security": [
@@ -1051,27 +873,48 @@
                 ]
             }
         },
-        "/questions/sub/{mainQuestion}": {
-            "get": {
+        "/messages/{id}": {
+            "put": {
                 "tags": [
-                    "Questions"
+                    "Messages"
                 ],
-                "summary": "Get sub-questions by main question ID",
-                "operationId": "805e99a54713b536805f67fac7f3b4ea",
+                "summary": "Update an existing message",
+                "operationId": "f4cf715785979f58fc242149e6ff40da",
                 "parameters": [
                     {
-                        "name": "mainQuestion",
+                        "name": "id",
                         "in": "path",
-                        "description": "ID of the main question",
+                        "description": "ID of the message to update",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "example": 15
                         }
                     }
                 ],
+                "requestBody": {
+                    "description": "Message data to update",
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "message"
+                                ],
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Updated message content"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "Questions retrieved successfully",
+                        "description": "Message updated successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1082,25 +925,43 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Questions retrieved successfully"
+                                            "example": "Message updated successfully"
                                         },
                                         "data": {
                                             "properties": {
-                                                "questions": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "integer",
-                                                                "example": 1
-                                                            },
-                                                            "text": {
-                                                                "type": "string",
-                                                                "example": "What is your favorite color?"
-                                                            }
+                                                "Message": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 15
                                                         },
-                                                        "type": "object"
-                                                    }
+                                                        "message": {
+                                                            "type": "string",
+                                                            "example": "Updated message content"
+                                                        },
+                                                        "is_ai": {
+                                                            "type": "boolean",
+                                                            "example": true
+                                                        },
+                                                        "type": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer",
+                                                                    "example": 1
+                                                                },
+                                                                "type": {
+                                                                    "type": "string",
+                                                                    "example": "career"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "example": "1 minute ago"
+                                                        }
+                                                    },
+                                                    "type": "object"
                                                 }
                                             },
                                             "type": "object"
@@ -1115,6 +976,54 @@
                             }
                         }
                     },
+                    "404": {
+                        "description": "Message not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Message not found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized to update message",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You are not authorized to update this message."
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 403
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "content": {
@@ -1132,30 +1041,6 @@
                                         "status_code": {
                                             "type": "integer",
                                             "example": 401
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Main question not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Main question not found"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 404
                                         }
                                     },
                                     "type": "object"
@@ -1170,163 +1055,27 @@
                     }
                 ]
             },
-            "post": {
-                "tags": [
-                    "Questions"
-                ],
-                "summary": "Add a new sub-question to a main question",
-                "operationId": "b5dfd8e9d5d330db4fb318a22742391f",
-                "parameters": [
-                    {
-                        "name": "mainQuestion",
-                        "in": "path",
-                        "description": "ID of the main question",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "description": "Sub-question data",
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "required": [
-                                    "text"
-                                ],
-                                "properties": {
-                                    "text": {
-                                        "type": "string",
-                                        "example": "What is your favorite color?"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Sub-question created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Question created successfully"
-                                        },
-                                        "data": {
-                                            "properties": {
-                                                "question": {
-                                                    "properties": {
-                                                        "id": {
-                                                            "type": "integer",
-                                                            "example": 1
-                                                        },
-                                                        "text": {
-                                                            "type": "string",
-                                                            "example": "What is your favorite color?"
-                                                        }
-                                                    },
-                                                    "type": "object"
-                                                }
-                                            },
-                                            "type": "object"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 201
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthenticated"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 401
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Main question not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Main question not found"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 404
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/questions/sub/{subQuestion}": {
             "delete": {
                 "tags": [
-                    "Questions"
+                    "Messages"
                 ],
-                "summary": "Delete a sub-question",
-                "operationId": "6b7438231fdedadf5e2abd9d8df50929",
+                "summary": "Delete a message",
+                "operationId": "e8593d3e1b8a40bb3fb6538e6561d3a1",
                 "parameters": [
                     {
-                        "name": "subQuestion",
+                        "name": "id",
                         "in": "path",
-                        "description": "ID of the sub-question to delete",
+                        "description": "ID of the message to delete",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "example": 15
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Sub-question deleted successfully",
+                        "description": "Message deleted successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1337,11 +1086,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Sub-question deleted successfully"
-                                        },
-                                        "data": {
-                                            "type": "object",
-                                            "example": []
+                                            "example": "Message deleted successfully"
                                         },
                                         "status_code": {
                                             "type": "integer",
@@ -1353,6 +1098,54 @@
                             }
                         }
                     },
+                    "404": {
+                        "description": "Message not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Message not found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized to delete message",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You are not authorized to delete this message."
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 403
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "content": {
@@ -1370,30 +1163,6 @@
                                         "status_code": {
                                             "type": "integer",
                                             "example": 401
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Sub-question not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Sub-question not found"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 404
                                         }
                                     },
                                     "type": "object"
@@ -2855,8 +2624,8 @@
             "description": "Chats"
         },
         {
-            "name": "Questions",
-            "description": "Questions"
+            "name": "Messages",
+            "description": "Messages"
         },
         {
             "name": "Types",

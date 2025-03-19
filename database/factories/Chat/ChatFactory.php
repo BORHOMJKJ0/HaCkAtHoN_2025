@@ -10,8 +10,7 @@ class ChatFactory extends Factory
     public function definition(): array
     {
         return [
-            'address' => $this->faker->address(),
-            'guest_name' => $this->faker->name(),
+            'name' => $this->faker->name(),
             'user_id' => User::inRandomOrder()->first(),
         ];
     }
